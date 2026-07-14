@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Galería de fotos de la Corrida de San Pedro — Durazno, Uruguay. Reviví los mejores momentos en nuestro Bento Grid." />
+  <meta name="robots" content="index, follow" />
+  <title>Galería de Fotos — Corrida de San Pedro</title>
+    <link rel="icon" type="image/jpeg" href="assets/logo.png" />
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,600;0,800;1,600&family=Montserrat:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+
+  <!-- Material Icons -->
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Round" rel="stylesheet" />
+
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body class="section-dark">
+
+  <!-- Fondo fijo (funciona igual en Android, iPhone y desktop) -->
+  <div class="page-bg-fixed" aria-hidden="true"></div>
+
+
+  <!-- ═══════════════════════════════════════ NAVBAR ═══ -->
+  <nav class="navbar scrolled" id="navbar">
+    <div class="nav-container">
+      <a href="#hero" class="nav-logo" aria-label="Inicio">
+        <img src="assets/logo.png" alt="Trillo Eventos" loading="lazy" decoding="async" />
+        <span class="nav-logo-text">Corrida<br><strong>San Pedro</strong></span>
+      </a>
+      <a href="index.html" class="nav-cta" id="navBackHome">
+        <span class="material-icons-round">arrow_back</span>
+        <span>Volver al Inicio</span>
+      </a>
+    </div>
+  </nav>
+
+  <!-- ═══════════════════════════════════════ HEADER ═══ -->
+  <header style="padding: 140px 24px 40px; text-align: center;">
+    <div class="container">
+      <span class="section-tag">
+        <span class="material-icons-round">photo_library</span>
+        Galería de Fotos
+      </span>
+      <h1 class="section-title">El latido de la corrida</h1>
+      <p class="section-subtitle">Momentos capturados a lo largo de las ediciones anteriores. Hacé clic en cualquier foto para ampliarla.</p>
+    </div>
+  </header>
+
+  <!-- ═══════════════════════════════════════ BENTO GRID FULL ═══ -->
+  <main class="gallery-page-container">
+    <!-- El grid se genera por JS desde el array GALLERY_IMAGES en app.js -->
+    <!-- Cada imagen se carga solo cuando está por entrar en pantalla (IntersectionObserver) -->
+    <div class="bento-full" id="bentoFull"></div>
+  </main>
+
+  <!-- ═══════════════════════════════════════ FOOTER ═══ -->
+  <footer class="footer" id="footer" style="margin-top: 80px;">
+    <div class="footer-container">
+      <div class="footer-brand">
+        <span class="footer-logo">
+          <span class="material-icons-round">directions_run</span>
+          Corrida de San Pedro
+        </span>
+        <p>Durazno, Uruguay<br>Honrando la tradición desde 2024</p>
+      </div>
+      <div class="footer-links">
+        <h4>Navegación</h4>
+        <ul>
+          <li><a href="index.html#sobre"><span class="material-icons-round">info</span> La Corrida</a></li>
+          <li><a href="index.html#categorias"><span class="material-icons-round">emoji_events</span> Categorías</a></li>
+          <li><a href="index.html#recorrido"><span class="material-icons-round">map</span> Recorrido</a></li>
+          <li><a href="index.html#ganadores"><span class="material-icons-round">workspace_premium</span> Ganadores</a></li>
+          <li><a href="index.html#ranking"><span class="material-icons-round">leaderboard</span> Ranking</a></li>
+        </ul>
+      </div>
+      <div class="footer-links">
+        <h4>Contacto</h4>
+        <ul>
+          <li><a href="mailto:[email@corrida.com]" id="linkMail"><span class="material-icons-round">email</span> [email@corrida.com]</a></li>
+          <li><a href="https://instagram.com" target="_blank" rel="noopener" id="linkIgFooter"><span class="material-icons-round">photo_camera</span> Instagram</a></li>
+          <li><a href="https://facebook.com" target="_blank" rel="noopener" id="linkFbFooter"><span class="material-icons-round">group</span> Facebook</a></li>
+          <li><a href="https://wa.me/598XXXXXXXX" target="_blank" rel="noopener" id="linkWa"><span class="material-icons-round">chat</span> WhatsApp</a></li>
+        </ul>
+      </div>
+      <div class="footer-links">
+        <h4>Inscripción</h4>
+        <ul>
+          <li><a href="https://accesofacil.com/CORRIDA-SAN-PEDRO-2026" target="_blank" rel="noopener" id="linkAfFooter"><span class="material-icons-round">confirmation_number</span> AccesoFácil</a></li>
+        </ul>
+        <div class="footer-organizers">
+          <p>Organiza: <strong>[Organizador / Institución]</strong></p>
+          <p>Auspicia: <strong>[Patrocinadores]</strong></p>
+        </div>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p>© 2026 Corrida de San Pedro — Durazno, Uruguay. Todos los derechos reservados.</p>
+    </div>
+  </footer>
+
+  <script src="app.js"></script>
+</body>
+</html>
