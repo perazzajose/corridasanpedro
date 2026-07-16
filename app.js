@@ -10,11 +10,6 @@ const CONFIG = {
   stravaScope: 'read,activity:read_all',
 };
 
-/* ─────────────────────────────────────────────────────────────
-   SPONSORS (index.html #sponsorsGrid)
-   Para agregar/quitar un sponsor, solo edita este array.
-   Poné los logos en assets/sponsor/nombre-del-archivo.png
-───────────────────────────────────────────────────────────── */
 const SPONSORS = [
   {
     name: 'La hogarena',
@@ -42,32 +37,22 @@ const SPONSORS = [
   },
 ];
 
-
-/* ─────────────────────────────────────────────────────────────
-   GALERÍA (galeria.html #bentoFull)
-   Para agregar/quitar una foto, solo edita este array.
-   class controla el tamaño en el bento grid: bento-w1/w2 (ancho), bento-h2 (alto)
-───────────────────────────────────────────────────────────── */
 const GALLERY_IMAGES = [
-  { src: 'assets/2.jpg',       alt: 'Largada de la corrida',                  label: '',                          class: 'bento-w2 bento-h2' },
-  { src: 'assets/1.jpg',       alt: 'Premiación general',                    label: '',                          class: 'bento-w1' },
-  { src: 'assets/3.jpg',       alt: 'Podio de ganadores',                    label: 'El Podio',                 class: 'bento-w1' },
-  { src: 'assets/4.jpg',       alt: 'Espectadores y recorrido',              label: 'El Recorrido',             class: 'bento-w1 bento-h2' },
-  { src: 'assets/5.jpg',       alt: 'Corredor en el circuito',               label: 'Atleta en Acción',         class: 'bento-w1' },
-  { src: 'assets/6.jpg',       alt: 'La Parroquia de San Pedro en Durazno',  label: 'Iglesia San Pedro Apóstol', class: 'bento-w2' },
-  { src: 'assets/8.jpg',       alt: 'Finalización de la corrida',            label: 'Llegada de Ganadores',      class: 'bento-w1' },
-  { src: 'assets/9.jpg',       alt: 'Trazado de la carrera',                 label: 'Mapa del Trazado',          class: 'bento-w1' },
-  { src: 'assets/',    alt: 'Grupo de corredores en salida',         label: 'La largada y ambiente',     class: 'bento-w2 bento-h2' },
-  { src: 'assets/bento2.jpg',  alt: 'Puesto de hidratación oficial',         label: 'Puesto de Hidratación',     class: 'bento-w1' },
-  { src: 'assets/bento3.jpg',  alt: 'Festejo cruzando la meta',              label: 'Victoria en la Meta',       class: 'bento-w1' },
-  { src: 'assets/bento1.jpg',  alt: 'Atletas largando a la carrera',         label: 'Emoción de largada',        class: 'bento-w2' },
+  { src: 'assets/2.jpg',      },
+  { src: 'assets/1.jpg',      },
+  { src: 'assets/3.jpg',     },
+  { src: 'assets/4.jpg',     },
+  { src: 'assets/5.jpg',     },
+  { src: 'assets/6.jpg',      },
+  { src: 'assets/8.jpg',      },
+  { src: 'assets/9.jpg',      },
+  { src: 'assets/',            },
+  { src: 'assets/bento2.jpg', },
+  { src: 'assets/bento3.jpg', },
+  { src: 'assets/bento1.jpg', },
 ];
 
 /* ─────────────────────────────────────────────────────────────
-   LAZY LOAD REAL (con fade-in, sin depender solo de loading="lazy")
-   Recibe una NodeList de <img data-src="..."> y les asigna el src
-   solo cuando están por entrar en pantalla, evitando cargar todo
-   de una sola vez (esto es lo que suele causar el "laggeo").
 ───────────────────────────────────────────────────────────── */
 function lazyLoadImages(imgs) {
   if (!imgs || !imgs.length) return;
@@ -118,7 +103,7 @@ function renderSponsors() {
 }
 
 /* ─────────────────────────────────────────────────────────────
-   RENDER: GALERÍA (bento grid completo)
+   RENDER: GALERÍA 
 ───────────────────────────────────────────────────────────── */
 function renderBentoFull() {
   const container = document.getElementById('bentoFull');
@@ -361,7 +346,6 @@ function initFranjaTabs() {
 }
 
 function initWinnersTabs() {
-  // Edition tabs
   document.querySelectorAll('.tab-btn').forEach(btn => {
     btn.addEventListener('click', () => {
       const target = btn.dataset.tab;
@@ -376,7 +360,6 @@ function initWinnersTabs() {
     });
   });
 
-  // Distance sub-tabs per panel
   document.querySelectorAll('.tab-panel').forEach(panel => {
     panel.querySelectorAll('.dist-tab').forEach(btn => {
       btn.addEventListener('click', () => {
@@ -440,7 +423,6 @@ function initLightbox() {
   const tapLeft   = modal.querySelector('.lightbox-tap-zone--left');
   const tapRight  = modal.querySelector('.lightbox-tap-zone--right');
 
-  // Estado del set de imágenes navegable (se arma según qué grupo se clickeó)
   let gallerySet = [];
   let currentIndex = 0;
 
@@ -460,7 +442,6 @@ function initLightbox() {
     caption.textContent = labelOverride ?? (item.label || item.alt || '');
   };
 
-  // Transición sutil: fade + leve desplazamiento en la dirección del cambio
   const goTo = direction => {
     if (gallerySet.length <= 1) return;
     currentIndex = (currentIndex + direction + gallerySet.length) % gallerySet.length;
@@ -472,8 +453,6 @@ function initLightbox() {
       renderImage();
       img.style.transition = 'none';
       img.style.transform = `translateX(${direction > 0 ? '18px' : '-18px'})`;
-      // Forzar reflow para que el navegador aplique la posición de partida
-      // antes de animar hacia la posición final.
       void img.offsetWidth;
       img.style.transition = 'opacity 0.25s ease, transform 0.25s ease';
       img.style.opacity = '1';
@@ -485,8 +464,6 @@ function initLightbox() {
   const prev = () => goTo(-1);
 
   const openLightbox = (targetImg, selector) => {
-    // Arma el set navegable con todas las imágenes del MISMO grupo
-    // (ej: todas las de .bento-full-item, o todas las de .gallery-grid-item)
     const nodes = Array.from(document.querySelectorAll(selector));
     gallerySet = nodes.map(node => {
       const parent = node.parentElement;
@@ -537,7 +514,7 @@ function initLightbox() {
     if (e.key === 'ArrowRight') next();
   });
 
-  // Swipe táctil, además del tap en los costados
+  // Swipe táctil
   let touchStartX = 0;
   modal.addEventListener('touchstart', e => { touchStartX = e.touches[0].clientX; }, { passive: true });
   modal.addEventListener('touchend', e => {
@@ -572,9 +549,9 @@ document.addEventListener('DOMContentLoaded', () => {
   initNavbar();
   initFloatingCta();
   initCountdown();
-  renderSponsors();   // index.html — no hace nada si #sponsorsGrid no existe
-  renderBentoFull();  // galeria.html — no hace nada si #bentoFull no existe
-  initReveal();       // se ejecuta después de inyectar el HTML dinámico
+  renderSponsors();   
+  renderBentoFull();  
+  initReveal();      
   initCarousel();
   initFranjaTabs();
   initWinnersTabs();
@@ -582,5 +559,5 @@ document.addEventListener('DOMContentLoaded', () => {
   initLightbox();
 
   console.log('%c🌿 Corrida de San Pedro', 'color:#2D6A4F;font-size:18px;font-weight:bold;');
-  console.log('%cDurazno, Uruguay — sitio web oficial v3', 'color:#74C69D;');
+  console.log('%cDurazno, Uruguay', 'color:#74C69D;');
 });

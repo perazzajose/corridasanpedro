@@ -1,7 +1,4 @@
 /* ═══════════════════════════════════════════════════════════════
-   CORRIDA DE SAN PEDRO — style.css  v2
-   Paleta: Roble + Verde Naturaleza
-   Botones Trapecio (velocidad) · Material Icons · Bento Grid
 ═══════════════════════════════════════════════════════════════ */
 
 /* ─── TOKENS ─────────────────────────────────────────────────── */
@@ -43,7 +40,7 @@
   --transition:      0.3s cubic-bezier(0.4,0,0.2,1);
   --transition-slow: 0.6s cubic-bezier(0.4,0,0.2,1);
 
-  /* Trapezoid button skew angle */
+ 
   --trap-skew: -10deg;
 }
 
@@ -138,8 +135,6 @@ ul  { list-style: none; }
 
 /* ════════════════════════════════════════════════════════════════
    TRAPEZOID / SPEED BUTTONS
-   clip-path gives true trapezoid; inner span counters the skew
-   so text/icon stay upright.
 ════════════════════════════════════════════════════════════════ */
 .btn-trap {
   display: inline-block;
@@ -154,7 +149,7 @@ ul  { list-style: none; }
     filter var(--transition),
     transform var(--transition),
     box-shadow var(--transition);
-  /* Trapezoid via clip-path — wider at top, narrower at bottom-left */
+ 
   clip-path: polygon(0% 0%, 100% 0%, calc(100% - 14px) 100%, 14px 100%);
 }
 
@@ -1169,6 +1164,10 @@ ul  { list-style: none; }
 .route-detail-card a:hover { color: var(--nature-deep); }
 
 /* ─── WINNERS ────────────────────────────────────────────────── */
+
+.winners-table .gold td:first-child::before   { content: "🥇 "; }
+.winners-table .silver td:first-child::before { content: "🥈 "; }
+.winners-table .bronze td:first-child::before { content: "🥉 "; }
 .winners-img-banner {
     border-radius: var(--radius-xl);
     overflow: hidden;
@@ -1386,10 +1385,6 @@ ul  { list-style: none; }
 @media (max-width: 768px) {
   .section { padding: 64px 0; }
 
-  /* Los backdrop-filter fijos (navbar, floating CTA) se recalculan en
-     cada frame de scroll porque el contenido detrás cambia constantemente.
-     Bajamos el blur en mobile, donde la GPU es más débil, para suavizar
-     el scroll sin perder el efecto visual. */
   .navbar.scrolled { backdrop-filter: blur(6px); }
   .floating-cta { backdrop-filter: blur(6px); }
 
@@ -1535,7 +1530,7 @@ ul  { list-style: none; }
   z-index: 11;
   box-shadow: 0 -16px 40px rgba(0, 0, 0, 0.1);
 }
-/* Reset mobile overrides so they don't break look on mobile */
+
 @media (max-width: 768px) {
   .bento-section { margin-top: -24px; overflow: hidden; }
   #sobre { margin-top: -24px; }
@@ -1641,7 +1636,6 @@ ul  { list-style: none; }
 .lightbox-next { right: -20px; }
 .lightbox-nav[hidden] { display: none; }
 
-/* Zonas invisibles para tocar izquierda/derecha en mobile */
 .lightbox-tap-zone {
   position: absolute;
   top: 0;
@@ -1658,13 +1652,6 @@ ul  { list-style: none; }
   .lightbox-next { right: 8px; width: 44px; height: 44px; }
 }
 
-/* ─── BENTO GRID FULL (GALERIA PAGE) ─────────────────────────── */
-/* Imagen de fondo fija para la página de galería completa.
-   Reemplazá la ruta por tu imagen real en assets/.
-   Usamos un div fijo dedicado (.page-bg-fixed) en vez de
-   background-attachment: fixed en el body, porque iOS Safari no soporta
-   bien esa propiedad y la trata como "scroll". Un elemento real con
-   position: fixed funciona igual en Android, iPhone y desktop. */
 .page-bg-fixed {
   position: fixed;
   inset: 0;
@@ -1688,7 +1675,7 @@ ul  { list-style: none; }
   gap: 28px;
   padding: 24px;
   border-radius: var(--radius-xl);
-  background: rgba(0,0,0,0.15); /* marco sutil para que el fondo se note detrás de la grilla */
+  background: rgba(0,0,0,0.15); 
 }
 .bento-full-item {
   position: relative;
