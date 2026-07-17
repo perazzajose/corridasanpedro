@@ -30,7 +30,7 @@
         <img src="assets/logo.png" alt="Trillo Eventos" loading="lazy" decoding="async" />
         <span class="nav-logo-text">Corrida<br><strong>San Pedro</strong></span>
       </a>
-      <a href="index.html" class="nav-cta" id="navBackHome">
+      <a href="index.html"  id="navBackHome">
         <span class="material-icons-round">arrow_back</span>
         <span>Volver al Inicio</span>
       </a>
@@ -38,7 +38,7 @@
   </nav>
 
   <!-- ═══════════════════════════════════════ HEADER ═══ -->
-  <header style="padding: 140px 24px 40px; text-align: center;">
+  <header class="gallery-header">
     <div class="container">
       <span class="section-tag">
         <span class="material-icons-round">photo_library</span>
@@ -46,12 +46,67 @@
       </span>
       <h1 class="section-title">El latido de la corrida</h1>
       <p class="section-subtitle">Momentos capturados a lo largo de las ediciones anteriores. Hacé clic en cualquier foto para ampliarla.</p>
+
+      <nav class="edition-jump-nav" aria-label="Ir a edición">
+        <a href="#ed2024" class="edition-jump-btn">
+          <span class="material-icons-round">looks_one</span> 2024
+        </a>
+        <a href="#ed2025" class="edition-jump-btn">
+          <span class="material-icons-round">looks_two</span> 2025
+        </a>
+        <a href="#ed2026" class="edition-jump-btn">
+          <span class="material-icons-round">looks_3</span> 2026
+        </a>
+      </nav>
     </div>
   </header>
 
-  <!-- ═══════════════════════════════════════ BENTO GRID FULL ═══ -->
+  <!-- ═══════════════════════════════════════ BENTO GRID POR EDICIÓN ═══ -->
   <main class="gallery-page-container">
-    <div class="bento-full" id="bentoFull"></div>
+
+    <!-- 2024 -->
+    <section class="edition-block" id="ed2024">
+      <div class="edition-header">
+        <span class="edition-number">01</span>
+        <div class="edition-info">
+          <span class="edition-title">1ª Edición · 2024</span>
+          <span class="edition-sub">Donde empezó todo</span>
+        </div>
+        <span class="edition-divider" aria-hidden="true"></span>
+      </div>
+      <div class="bento-full" id="bentoFull2024"></div>
+    </section>
+
+    <!-- 2025 -->
+    <section class="edition-block" id="ed2025">
+      <div class="edition-header">
+        <span class="edition-number">02</span>
+        <div class="edition-info">
+          <span class="edition-title">2ª Edición · 2025</span>
+          <span class="edition-sub">La corrida en su mejor momento</span>
+        </div>
+        <span class="edition-divider" aria-hidden="true"></span>
+      </div>
+      <div class="bento-full" id="bentoFull2025"></div>
+    </section>
+
+    <!-- 2026 -->
+    <section class="edition-block" id="ed2026">
+      <div class="edition-header">
+        <span class="edition-number">03</span>
+        <div class="edition-info">
+          <span class="edition-title">3ª Edición · 2026</span>
+          <span class="edition-sub">27 de setiembre</span>
+        </div>
+        <span class="edition-divider" aria-hidden="true"></span>
+      </div>
+      <div class="edition-soon">
+        <span class="material-icons-round">photo_camera</span>
+        <strong>Próximamente</strong>
+        <span>Las fotos de la edición 2026 se van a sumar acá apenas termine la corrida.</span>
+      </div>
+    </section>
+
   </main>
 
   <!-- ═══════════════════════════════════════ FOOTER ═══ -->

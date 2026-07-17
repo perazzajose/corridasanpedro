@@ -37,20 +37,28 @@ const SPONSORS = [
   },
 ];
 
-const GALLERY_IMAGES = [
-  { src: 'assets/2.jpg',      },
-  { src: 'assets/1.jpg',      },
-  { src: 'assets/3.jpg',     },
-  { src: 'assets/4.jpg',     },
-  { src: 'assets/5.jpg',     },
-  { src: 'assets/6.jpg',      },
-  { src: 'assets/8.jpg',      },
-  { src: 'assets/9.jpg',      },
-  { src: 'assets/',            },
-  { src: 'assets/bento2.jpg', },
-  { src: 'assets/bento3.jpg', },
-  { src: 'assets/bento1.jpg', },
-];
+const GALLERY_EDITIONS = {
+  2024: [
+    'assets/recorrido1.jpg',
+    'assets/final.jpeg',
+    'assets/podio.webp',
+  ],
+  2025: [
+    'assets/2.jpg',
+    'assets/1.jpg',
+    'assets/3.jpg',
+    'assets/4.jpg',
+    'assets/5.jpg',
+    'assets/6.jpg',
+    'assets/8.jpg',
+    'assets/9.jpg',
+    'assets/10.jpg',
+    'assets/11.jpg',
+    'assets/12.jpg',
+    'assets/14.jpg',
+    'assets/cuerdatambores.jpg',
+  ],
+};
 
 /* ─────────────────────────────────────────────────────────────
 ───────────────────────────────────────────────────────────── */
@@ -105,24 +113,60 @@ function renderSponsors() {
 /* ─────────────────────────────────────────────────────────────
    RENDER: GALERÍA 
 ───────────────────────────────────────────────────────────── */
-function renderBentoFull() {
-  const container = document.getElementById('bentoFull');
-  if (!container) return;
+// Patrón bento: 1 foto grande (8 cols x 2 filas) + 4 chicas (4 cols x 1 fila)
+// alrededor, repitiendo y alternando de lado para que no quede simétrico.
+const BENTO_PATTERN_LEFT  = ['bento-w3 bento-h2', 'bento-w1', 'bento-w1', 'bento-w1', 'bento-w1'];
+const BENTO_PATTERN_RIGHT = ['bento-w1', 'bento-w1', 'bento-w3 bento-h2', 'bento-w1', 'bento-w1'];
 
-  container.innerHTML = GALLERY_IMAGES.map(item => `
-    <div class="bento-full-item ${item.class}">
+function bentoClassesFor(count) {
+  // Secciones chicas (2 o 3 fotos): todas del mismo tamaño, una sola fila prolija.
+  if (count <= 3) {
+    const span = count === 1 ? 'bento-w3' : count === 2 ? 'bento-w2' : 'bento-w1';
+    return Array(count).fill(span);
+  }
+
+  const classes = [];
+  let side = 0; // alterna patrón izq/der cada 5 fotos
+  while (classes.length < count) {
+    const pattern = side % 2 === 0 ? BENTO_PATTERN_LEFT : BENTO_PATTERN_RIGHT;
+    classes.push(...pattern);
+    side++;
+  }
+  classes.length = count;
+
+  // Si sobran 1 o 2 fotos sueltas al final del patrón, que llenen fila entera.
+  const remainder = count % 5;
+  if (remainder === 1) classes[count - 1] = 'bento-w3';
+  if (remainder === 2) { classes[count - 2] = 'bento-w2'; classes[count - 1] = 'bento-w2'; }
+
+  return classes;
+}
+
+function renderBentoEdition(containerId, srcs) {
+  const container = document.getElementById(containerId);
+  if (!container || !srcs || !srcs.length) return;
+
+  const classes = bentoClassesFor(srcs.length);
+
+  container.innerHTML = srcs.map((src, i) => `
+    <div class="bento-full-item ${classes[i]}">
       <img
-        data-src="${item.src}"
-        alt="${item.alt}"
+        data-src="${src}"
+        alt="Corrida de San Pedro"
         loading="lazy"
         decoding="async"
         style="opacity:0;transition:opacity .4s ease;"
       />
-      ${item.label ? `<div class="bento-label">${item.label}</div>` : ''}
     </div>
   `).join('');
 
   lazyLoadImages(container.querySelectorAll('img[data-src]'));
+}
+
+function renderBentoFull() {
+  Object.entries(GALLERY_EDITIONS).forEach(([year, srcs]) => {
+    renderBentoEdition(`bentoFull${year}`, srcs);
+  });
 }
 
 /* ─────────────────────────────────────────────────────────────
