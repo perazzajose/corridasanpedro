@@ -22,24 +22,19 @@
 // Firestore solo guarda ese link.
 // ─────────────────────────────────────────────────────────────
 
-// Import the functions you need from the SDKs you need
-import { initializeApp } from "firebase/app";
-import { getAnalytics } from "firebase/analytics";
-// TODO: Add SDKs for Firebase products that you want to use
-// https://firebase.google.com/docs/web/setup#available-libraries
+import { initializeApp }  from 'https://www.gstatic.com/firebasejs/12.11.0/firebase-app.js';
+import { getFirestore }   from 'https://www.gstatic.com/firebasejs/12.11.0/firebase-firestore.js';
+import { getAuth }        from 'https://www.gstatic.com/firebasejs/12.11.0/firebase-auth.js';
 
-// Your web app's Firebase configuration
-// For Firebase JS SDK v7.20.0 and later, measurementId is optional
 const firebaseConfig = {
-  apiKey: "AIzaSyCkOMlEspSCKSIahXEx0w5RWZAhuuwQyBU",
-  authDomain: "corrida-san-pedro.firebaseapp.com",
-  projectId: "corrida-san-pedro",
-  storageBucket: "corrida-san-pedro.firebasestorage.app",
-  messagingSenderId: "802944791255",
-  appId: "1:802944791255:web:9278b78a888085f085f692",
-  measurementId: "G-BSGLC3KE0P"
+  apiKey:            "TU_API_KEY",
+  authDomain:        "TU_PROYECTO.firebaseapp.com",
+  projectId:         "TU_PROYECTO",
+  storageBucket:     "TU_PROYECTO.appspot.com",
+  messagingSenderId: "TU_SENDER_ID",
+  appId:             "TU_APP_ID",
 };
 
-// Initialize Firebase
-const app = initializeApp(firebaseConfig);
-const analytics = getAnalytics(app);
+export const app  = initializeApp(firebaseConfig);
+export const db   = getFirestore(app);
+export const auth = getAuth(app);
