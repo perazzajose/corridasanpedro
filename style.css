@@ -829,6 +829,12 @@ ul  { list-style: none; }
 .bento-item:nth-child(4) { grid-column: 1 / 5; grid-row: 2; }
 .bento-wide-bottom { grid-column: 5 / 8; grid-row: 2; }
 
+.bento-cta-wrap {
+  display: flex;
+  justify-content: center;
+  padding: 28px 0 36px;
+}
+
 /* Mobile Carousel */
 .carousel-wrap {
   display: none;
@@ -1503,6 +1509,7 @@ ul  { list-style: none; }
 
   /* Bento → Carousel on mobile */
   .bento-grid    { display: none; }
+  .bento-cta-wrap { display: none; }
   .carousel-wrap { display: block; }
   .remera-grid { grid-template-columns: 1fr; gap: 20px; }
 
@@ -1727,6 +1734,8 @@ ul  { list-style: none; }
   background: rgba(0,0,0,0.15); 
 }
 
+.bento-full[hidden] { display: none; }
+
 /* ─── EDITION BLOCKS ─────────────────────────────────────────── */
 .edition-block { margin-bottom: 72px; }
 .edition-block:last-child { margin-bottom: 0; }
@@ -1763,6 +1772,45 @@ ul  { list-style: none; }
   background: linear-gradient(90deg, rgba(255,255,255,0.25), transparent);
   align-self: center;
 }
+
+.edition-soon[hidden] { display: none; }
+
+.edition-more-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  width: fit-content;
+  margin: 24px auto 0;
+  padding: 12px 28px;
+  border-radius: 999px;
+  border: 1px solid rgba(255,255,255,0.25);
+  background: rgba(255,255,255,0.06);
+  color: var(--white);
+  font-family: 'Montserrat', sans-serif;
+  font-size: 0.9rem;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  cursor: pointer;
+  transition: background var(--transition), border-color var(--transition), transform var(--transition);
+}
+.edition-more-btn .material-icons-round { font-size: 1.1rem; color: var(--nature-light); }
+.edition-more-btn .edition-more-count {
+  font-size: 0.75rem;
+  padding: 2px 9px;
+  border-radius: 999px;
+  background: var(--nature-light);
+  color: var(--oak-dark);
+  font-weight: 700;
+}
+.edition-more-btn:hover,
+.edition-more-btn:focus-visible {
+  background: rgba(255,255,255,0.14);
+  border-color: var(--nature-light);
+  transform: translateY(-2px);
+}
+.edition-more-btn:active { transform: translateY(0); }
+.edition-more-btn[hidden] { display: none; }
 
 .edition-soon {
   display: flex;

@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="robots" content="noindex, nofollow" />
+  <title>Admin · Galería — Corrida de San Pedro</title>
+  <link rel="icon" type="image/jpeg" href="assets/logo.png" />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,600;0,800;1,600&family=Montserrat:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Round" rel="stylesheet" />
+
+  <link rel="stylesheet" href="style.css" />
+  <link rel="stylesheet" href="admin.css" />
+</head>
+<body class="section-dark admin-body">
+
+  <div class="page-bg-fixed" aria-hidden="true"></div>
+
+  <!-- ═══════════════════════════════ LOGIN ═══ -->
+  <div class="admin-login-screen" id="loginScreen">
+    <form class="admin-login-card" id="loginForm">
+      <span class="material-icons-round admin-login-icon">lock</span>
+      <h1>Panel de Galería</h1>
+      <p>Corrida de San Pedro</p>
+
+      <label>
+        <span>Correo</span>
+        <input type="email" id="loginEmail" autocomplete="username" required />
+      </label>
+      <label>
+        <span>Contraseña</span>
+        <input type="password" id="loginPassword" autocomplete="current-password" required />
+      </label>
+
+      <button type="submit" class="btn-trap btn-trap--card" id="loginSubmitBtn">
+        <span class="btn-inner">
+          <span class="material-icons-round">login</span>
+          Ingresar
+        </span>
+      </button>
+
+      <p class="admin-login-error" id="loginError" hidden></p>
+    </form>
+  </div>
+
+  <!-- ═══════════════════════════════ DASHBOARD ═══ -->
+  <div class="admin-dashboard" id="adminDashboard" hidden>
+
+    <header class="admin-header">
+      <div class="admin-header-title">
+        <span class="material-icons-round">photo_library</span>
+        <span>Galería · Corrida de San Pedro</span>
+      </div>
+      <div class="admin-header-actions">
+        <a href="galeria.html" target="_blank" rel="noopener" class="admin-link-btn">
+          <span class="material-icons-round">open_in_new</span> Ver galería
+        </a>
+        <button type="button" class="admin-link-btn" id="logoutBtn">
+          <span class="material-icons-round">logout</span> Salir
+        </button>
+      </div>
+    </header>
+
+    <main class="admin-main">
+
+      <nav class="admin-section-tabs" id="adminSectionTabs">
+        <button type="button" class="admin-section-tab admin-section-tab--active" data-section="galeria">
+          <span class="material-icons-round">photo_library</span> Galería
+        </button>
+        <button type="button" class="admin-section-tab" data-section="sponsors">
+          <span class="material-icons-round">handshake</span> Sponsors
+        </button>
+      </nav>
+
+      <!-- ═══ SECCIÓN GALERÍA ═══ -->
+      <section class="admin-section" id="sectionGaleria">
+
+        <div class="admin-toolbar">
+          <nav class="admin-tabs" id="adminTabs">
+            <button type="button" class="tab-btn tab-btn--active" data-year="2024">2024</button>
+            <button type="button" class="tab-btn" data-year="2025">2025</button>
+            <button type="button" class="tab-btn" data-year="2026">2026</button>
+          </nav>
+
+          <button type="button" class="admin-import-btn" id="importBtn">
+            <span class="material-icons-round">cloud_download</span>
+            Importar fotos actuales del sitio
+          </button>
+        </div>
+        <p class="admin-hint">
+          "Importar fotos actuales" carga en Firestore, una sola vez, las fotos que ya están
+          en <code>assets/</code>. Los duplicados se saltean automáticamente.
+        </p>
+
+        <section class="admin-upload-box">
+          <p class="admin-imgur-tip">
+            <span class="material-icons-round">lightbulb</span>
+            Subí la foto a <a href="https://imgur.com/upload" target="_blank" rel="noopener">imgur.com/upload</a>,
+            click derecho sobre la imagen ya subida → <strong>"Copiar dirección de imagen"</strong> → pegala acá abajo.
+          </p>
+          <form class="admin-url-form" id="photoUrlForm">
+            <input type="url" id="photoUrlInput" placeholder="https://i.imgur.com/xxxxx.jpg" required />
+            <button type="submit" class="btn-trap btn-trap--card" id="photoUrlSubmitBtn">
+              <span class="btn-inner">
+                <span class="material-icons-round">add_photo_alternate</span>
+                Agregar a <span id="uploadYearLabel">2024</span>
+              </span>
+            </button>
+          </form>
+          <p class="admin-url-error" id="photoUrlError" hidden></p>
+        </section>
+
+        <section class="admin-photos-grid" id="photosGrid">
+          <p class="admin-empty" id="photosEmpty">Cargando fotos…</p>
+        </section>
+
+      </section>
+
+      <!-- ═══ SECCIÓN SPONSORS ═══ -->
+      <section class="admin-section" id="sectionSponsors" hidden>
+
+        <form class="admin-sponsor-form" id="sponsorForm">
+          <h2><span class="material-icons-round">add_business</span> Agregar sponsor</h2>
+
+          <div class="admin-sponsor-form-grid">
+            <label>
+              <span>Nombre</span>
+              <input type="text" id="sponsorName" required placeholder="Ej: La Hogareña" />
+            </label>
+            <label>
+              <span>Sitio web</span>
+              <input type="url" id="sponsorUrl" placeholder="https://..." />
+            </label>
+          </div>
+
+          <label>
+            <span>Descripción breve</span>
+            <textarea id="sponsorDesc" rows="2" placeholder="Breve descripción de la empresa y su apoyo a la corrida."></textarea>
+          </label>
+
+          <p class="admin-imgur-tip">
+            <span class="material-icons-round">lightbulb</span>
+            Subí el logo a <a href="https://imgur.com/upload" target="_blank" rel="noopener">imgur.com/upload</a> y pegá el link acá (fondo transparente o blanco recomendado).
+          </p>
+          <label>
+            <span>Link del logo</span>
+            <input type="url" id="sponsorLogoUrl" required placeholder="https://i.imgur.com/xxxxx.png" />
+          </label>
+
+          <button type="submit" class="btn-trap btn-trap--card" id="sponsorSubmitBtn">
+            <span class="btn-inner">
+              <span class="material-icons-round">add</span>
+              Agregar sponsor
+            </span>
+          </button>
+          <p class="admin-url-error" id="sponsorUrlError" hidden></p>
+        </form>
+
+        <h2 class="admin-sponsor-list-title"><span class="material-icons-round">list</span> Sponsors actuales</h2>
+        <section class="admin-sponsor-list" id="sponsorsList">
+          <p class="admin-empty" id="sponsorsEmpty">Cargando sponsors…</p>
+        </section>
+
+      </section>
+
+    </main>
+  </div>
+
+  <script type="module" src="admin.js"></script>
+</body>
+</html>

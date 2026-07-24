@@ -1,0 +1,30 @@
+// Pegar en: Firebase Console → Storage → pestaña "Reglas"
+//
+// Lectura pública (las fotos se muestran a cualquier visitante),
+// escritura solo si estás logueado en /admin (Authentication),
+// y solo para imágenes de hasta 8MB.
+
+rules_version = '2';
+
+service firebase.storage {
+  match /b/{bucket}/o {
+
+    match /galeria/{year}/{fileName} {
+      allow read: if true;
+      allow write: if request.auth != null
+                   && request.resource.size < 8 * 1024 * 1024
+                   && request.resource.contentType.matches('image/.*');
+    }
+
+    match /sponsors/{fileName} {
+      allow read: if true;
+      allow write: if request.auth != null
+                   && request.resource.size < 8 * 1024 * 1024
+                   && request.resource.contentType.matches('image/.*');
+    }
+
+    match /{allPaths=**} {
+      allow read, write: if false;
+    }
+  }
+}

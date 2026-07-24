@@ -10,7 +10,9 @@ const CONFIG = {
   stravaScope: 'read,activity:read_all',
 };
 
-const SPONSORS = [
+// Sponsors de respaldo: se usan si Firestore todavía no tiene
+// sponsors cargados, o si falla la conexión.
+const SPONSORS_FALLBACK = [
   {
     name: 'La hogarena',
     logo: 'assets/sponsors/lahogarena.jpg',
@@ -37,7 +39,13 @@ const SPONSORS = [
   },
 ];
 
-const GALLERY_EDITIONS = {
+// Array que realmente se pinta. Arranca con el respaldo local y se
+// sobreescribe apenas sponsors-firestore.js trae datos (si hay).
+let SPONSORS = [...SPONSORS_FALLBACK];
+
+// Fotos locales de respaldo: se usan si Firestore todavía no tiene
+// fotos cargadas para una edición, o si falla la conexión.
+const GALLERY_EDITIONS_FALLBACK = {
   2024: [
     'assets/recorrido1.jpg',
     'assets/final.jpeg',
@@ -60,8 +68,11 @@ const GALLERY_EDITIONS = {
   ],
 };
 
-/* ─────────────────────────────────────────────────────────────
-───────────────────────────────────────────────────────────── */
+// Objeto que realmente se usa para pintar el bento grid. Arranca
+// con las fotos locales de respaldo y se sobreescribe por edición
+// apenas gallery-firestore.js trae datos de Firestore (si hay).
+const GALLERY_EDITIONS = { ...GALLERY_EDITIONS_FALLBACK };
+
 function lazyLoadImages(imgs) {
   if (!imgs || !imgs.length) return;
 
@@ -110,6 +121,15 @@ function renderSponsors() {
   lazyLoadImages(grid.querySelectorAll('img[data-src]'));
 }
 
+// Hook que llama sponsors-firestore.js apenas trae los datos remotos.
+// Si Firestore no tiene sponsors todavía (o falla), se usa el respaldo local.
+window.initSponsorsFromFirestore = function initSponsorsFromFirestore(remoteSponsors) {
+  if (remoteSponsors && remoteSponsors.length) {
+    SPONSORS = remoteSponsors;
+  }
+  renderSponsors();
+};
+
 /* ─────────────────────────────────────────────────────────────
    RENDER: GALERÍA 
 ───────────────────────────────────────────────────────────── */
@@ -142,13 +162,17 @@ function bentoClassesFor(count) {
   return classes;
 }
 
-function renderBentoEdition(containerId, srcs) {
+const GALLERY_PREVIEW_LIMIT = 10;
+
+function renderBentoEdition(containerId, srcs, expanded) {
   const container = document.getElementById(containerId);
   if (!container || !srcs || !srcs.length) return;
 
-  const classes = bentoClassesFor(srcs.length);
+  const hasMore = srcs.length > GALLERY_PREVIEW_LIMIT;
+  const list = expanded ? srcs : srcs.slice(0, GALLERY_PREVIEW_LIMIT);
+  const classes = bentoClassesFor(list.length);
 
-  container.innerHTML = srcs.map((src, i) => `
+  container.innerHTML = list.map((src, i) => `
     <div class="bento-full-item ${classes[i]}">
       <img
         data-src="${src}"
@@ -161,13 +185,75 @@ function renderBentoEdition(containerId, srcs) {
   `).join('');
 
   lazyLoadImages(container.querySelectorAll('img[data-src]'));
+
+  // Botón "ver edición completa"
+  const year = containerId.replace('bentoFull', '');
+  let moreBtn = container.parentElement.querySelector('.edition-more-btn');
+
+  if (hasMore && !expanded) {
+    if (!moreBtn) {
+      moreBtn = document.createElement('button');
+      moreBtn.type = 'button';
+      moreBtn.className = 'edition-more-btn';
+      container.insertAdjacentElement('afterend', moreBtn);
+    }
+    moreBtn.dataset.year = year;
+    moreBtn.hidden = false;
+    moreBtn.innerHTML = `
+      <span class="material-icons-round">grid_view</span>
+      Ver edición completa
+      <span class="edition-more-count">+${srcs.length - GALLERY_PREVIEW_LIMIT}</span>
+    `;
+  } else if (moreBtn) {
+    moreBtn.hidden = true;
+  }
 }
 
 function renderBentoFull() {
   Object.entries(GALLERY_EDITIONS).forEach(([year, srcs]) => {
-    renderBentoEdition(`bentoFull${year}`, srcs);
+    renderBentoEdition(`bentoFull${year}`, srcs, false);
+
+    // La edición 2026 arranca sin grid visible ("Próximamente"). Si
+    // resulta que ya tiene fotos (cargadas desde /admin), mostramos
+    // el grid y ocultamos el cartel de "Próximamente".
+    if (String(year) === '2026' && srcs.length) {
+      const soon = document.getElementById('edition2026Soon');
+      const grid = document.getElementById('bentoFull2026');
+      if (soon) soon.hidden = true;
+      if (grid) grid.hidden = false;
+    }
   });
 }
+
+function initEditionExpand() {
+  document.addEventListener('click', e => {
+    const btn = e.target.closest('.edition-more-btn');
+    if (!btn) return;
+    const { year } = btn.dataset;
+    const srcs = GALLERY_EDITIONS[year];
+    if (!srcs) return;
+    renderBentoEdition(`bentoFull${year}`, srcs, true);
+  });
+}
+
+// Hook que llama gallery-firestore.js apenas trae los datos remotos.
+// Si una edición no tiene fotos en Firestore (todavía), se usa el
+// respaldo local para no dejar la sección vacía.
+window.initGalleryFromFirestore = function initGalleryFromFirestore(remoteData) {
+  Object.keys(GALLERY_EDITIONS_FALLBACK).forEach(year => {
+    GALLERY_EDITIONS[year] = (remoteData[year] && remoteData[year].length)
+      ? remoteData[year]
+      : GALLERY_EDITIONS_FALLBACK[year];
+  });
+  // Ediciones nuevas que no existían como respaldo local (ej. 2026
+  // apenas empiece a tener fotos reales cargadas desde /admin).
+  Object.keys(remoteData).forEach(year => {
+    if (!GALLERY_EDITIONS[year] && remoteData[year].length) {
+      GALLERY_EDITIONS[year] = remoteData[year];
+    }
+  });
+  renderBentoFull();
+};
 
 /* ─────────────────────────────────────────────────────────────
    NAVBAR
@@ -595,6 +681,7 @@ document.addEventListener('DOMContentLoaded', () => {
   initCountdown();
   renderSponsors();   
   renderBentoFull();  
+  initEditionExpand();
   initReveal();      
   initCarousel();
   initFranjaTabs();
